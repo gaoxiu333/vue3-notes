@@ -2,7 +2,7 @@
  * @Author: xiu gao.yh1991@gmail.com
  * @Date: 2023-04-21 21:37:39
  * @LastEditors: xiu gao.yh1991@gmail.com
- * @LastEditTime: 2023-04-23 15:45:09
+ * @LastEditTime: 2023-04-23 15:49:49
  * @FilePath: /vue3-notes/vue-vite/src/views/diffApi/compositionApi.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -33,8 +33,15 @@ export default {
         const increment = () => ++count.value
 
         // 计算属性
-        const formatCount = computed(() => {
-            return `¥ ${count.value}`
+        const formatCount = computed({
+            // getter
+            get() {
+                return `¥ ${count.value}`
+            },
+            // setter
+            set(newVal) {
+                console.log('formatCount is set', newVal)
+            }
         })
 
         // 监听器
@@ -51,9 +58,8 @@ export default {
                 onTrigger: () => { }// 调试：响应式数据发生更改时触发
             }
         )
-        stopCountWatch() // 停止监听
+        // stopCountWatch() // 停止监听
 
-        
         // 模版引用
         // 
 
