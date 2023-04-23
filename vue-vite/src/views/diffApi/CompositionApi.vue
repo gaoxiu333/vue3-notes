@@ -2,7 +2,7 @@
  * @Author: xiu gao.yh1991@gmail.com
  * @Date: 2023-04-21 21:37:39
  * @LastEditors: xiu gao.yh1991@gmail.com
- * @LastEditTime: 2023-04-23 12:59:18
+ * @LastEditTime: 2023-04-23 15:45:09
  * @FilePath: /vue3-notes/vue-vite/src/views/diffApi/compositionApi.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,15 +13,22 @@
     <button @click="increment">count +1</button>
 </template>
 <script lang="ts">
-import { computed, h, onActivated, onBeforeMount, onBeforeUnmount, onBeforeUpdate, onDeactivated, onErrorCaptured, onMounted, onRenderTracked, onRenderTriggered, onServerPrefetch, onUnmounted, onUpdated, ref } from 'vue'
+import { computed, h, onActivated, onBeforeMount, onBeforeUnmount, onBeforeUpdate, onDeactivated, onErrorCaptured, onMounted, onRenderTracked, onRenderTriggered, onServerPrefetch, onUnmounted, onUpdated, ref, watch } from 'vue'
 export default {
-    // props:props对象
-    // ctx:setup的上下文，同vue2中的this
+
+    /**
+     * 有两种返回：
+     * 1.若返回一个对象，则对象中的属性、方法, 在模板中均可以直接使用
+     * 2.若返回一个渲染函数：则可以自定义渲染内容
+     * @param props  props对象
+     * @param ctx setup的上下文，同vue2中的this
+     */
     setup(props, ctx) {
         console.log('setup', props, ctx)
 
         // ref 响应式数据
         const count = ref(0)
+
         // 定义方法
         const increment = () => ++count.value
 
@@ -30,6 +37,25 @@ export default {
             return `¥ ${count.value}`
         })
 
+        // 监听器
+        const stopCountWatch = watch(
+            () => count,
+            (curr, prev) => {
+                console.log('watch count', { curr, prev })
+            },
+            {
+                immediate: true, // 监听器创建时，立即触发回调
+                deep: true, // 开启深层监听器：遍历监听对象中所有嵌套的属性。
+                flush: 'post',// 调整回调函数的刷新机制：比如指明在DOM更新后调用回调函数
+                onTrack: () => { }, // 调试：响应式数据被依赖收集期间触发
+                onTrigger: () => { }// 调试：响应式数据发生更改时触发
+            }
+        )
+        stopCountWatch() // 停止监听
+
+        
+        // 模版引用
+        // 
 
         // 生命周期钩子函数
         /**
