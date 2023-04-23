@@ -1,11 +1,3 @@
-<!--
- * @Author: xiu gao.yh1991@gmail.com
- * @Date: 2023-04-21 21:37:39
- * @LastEditors: xiu gao.yh1991@gmail.com
- * @LastEditTime: 2023-04-23 16:00:20
- * @FilePath: /vue3-notes/vue-vite/src/views/diffApi/compositionApi.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
     <h3 ref="h3ref">组合式API</h3>
     <p>{{ count }}</p>
@@ -46,7 +38,7 @@ export default {
         })
 
         // 监听器
-        const stopCountWatch = watch(
+        const unWatchCount = watch(
             () => count,
             (curr, prev) => {
                 console.log('watch count', { curr, prev })
@@ -59,7 +51,7 @@ export default {
                 onTrigger: () => { }// 调试：响应式数据发生更改时触发
             }
         )
-        // stopCountWatch() // 停止监听
+        // unWatchCount() // 当不再需要监听时
 
         // 模版引用
         /**
