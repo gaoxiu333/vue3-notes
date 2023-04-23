@@ -2,12 +2,12 @@
  * @Author: xiu gao.yh1991@gmail.com
  * @Date: 2023-04-21 21:37:39
  * @LastEditors: xiu gao.yh1991@gmail.com
- * @LastEditTime: 2023-04-23 15:49:49
+ * @LastEditTime: 2023-04-23 16:00:20
  * @FilePath: /vue3-notes/vue-vite/src/views/diffApi/compositionApi.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-    <h3>组合式API</h3>
+    <h3 ref="h3ref">组合式API</h3>
     <p>{{ count }}</p>
     <p>{{ formatCount }}</p>
     <button @click="increment">count +1</button>
@@ -24,6 +24,7 @@ export default {
      * @param ctx setup的上下文，同vue2中的this
      */
     setup(props, ctx) {
+
         console.log('setup', props, ctx)
 
         // ref 响应式数据
@@ -61,7 +62,11 @@ export default {
         // stopCountWatch() // 停止监听
 
         // 模版引用
-        // 
+        /**
+         * 声明一个 ref 来存放该元素的引用
+         * 必须和模板里的 ref 同名
+         */
+        const h3ref = ref(null)
 
         // 生命周期钩子函数
         /**
@@ -70,6 +75,7 @@ export default {
          * 2.在服务器端渲染期间不会被调用。
          */
         onMounted(() => {
+            console.log("组件挂载完成后查看h3ref的模版引用", { h3ref: h3ref.value })
             console.log("生命周期：onMounted")
         })
 
@@ -156,7 +162,8 @@ export default {
         return {
             count,
             formatCount,
-            increment
+            increment,
+            h3ref
         }
         // 也可以返回渲染函数，但是返回渲染函数会阻止返回其他东西
         // return () => h('div', [h('h1', '组合式API 渲染函数'), h('p', count.value), h('button', { onClick: increment }, 'count + 1')])
